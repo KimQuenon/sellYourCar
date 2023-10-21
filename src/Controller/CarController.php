@@ -90,6 +90,30 @@ class CarController extends AbstractController
         $form = $this->createForm(CarType::class, $car); //récupérer le formulaire
         $form->handleRequest($request);
 
+        if($form->isSubmitted() && $form->isValid())
+        {
+
+              // gestion des images 
+              foreach($car->getImages() as $image)
+              {
+                  $image->setCar($car);
+                  $manager->persist($image);
+              }
+
+              $manager->persist($car);
+              $manager->flush();
+
+              $this->addFlash(
+                'success',
+                "L'annonce <strong>".$car->getBrand()." ".$car->getModel()."</strong> a bien été modifiée!"
+              );
+
+              return $this->redirectToRoute('cars_show',[
+                'slug' => $car->getSlug()
+              ]);
+
+        }
+
         return $this->render("cars/edit.html.twig",[
             "car"=> $car,
             "myForm"=> $form->createView()
