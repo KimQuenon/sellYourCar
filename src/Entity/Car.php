@@ -8,9 +8,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CarRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CarRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(fields:['model'], message:"Un tel modèle existe déjà dans notre store, merci de le modifier.")]
+
+
 class Car
 {
     #[ORM\Id]
@@ -19,15 +24,18 @@ class Car
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 8, max:250, minMessage:"Le modèle doit faire plus de 8 caractères.", maxMessage: "Le modèle ne doit pas faire plus de 250 caractères.")]
     private ?string $model = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 5, max:250, minMessage:"La marque doit faire plus de 5 caractères.", maxMessage: "La marque ne doit pas faire plus de 250 caractères.")]
     private ?string $brand = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Url(message:"Url invalide")]
     private ?string $coverImage = null;
 
     #[ORM\Column]
@@ -46,21 +54,26 @@ class Car
     private ?int $power = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 5, max:15, minMessage:"Le type de carburant doit faire plus de 5 caractères.", maxMessage: "Le type de carburant ne doit pas faire plus de 15 caractères.")]
     private ?string $carburant = null;
 
     #[ORM\Column]
     private ?int $year = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 5, max:12, minMessage:"Le type de transmission doit faire plus de 5 caractères.", maxMessage: "Le type de transmission ne doit pas faire plus de 12 caractères.")]
     private ?string $transmission = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(min: 50, minMessage:"La description doit faire plus de 50 caractères.")]
     private ?string $content = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(min: 50, minMessage:"Vos options doivent faire plus de 50 caractères.")]
     private ?string $options = null;
 
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: Images::class, orphanRemoval: true)]
+    #[Assert\Valid()]
     private Collection $images;
 
     public function __construct()

@@ -41,19 +41,6 @@ class CarController extends AbstractController
         $car = new Car();
 
         
-        $image1 = new Images();
-        $image1->setUrl("https://picsum.photos/400/200")
-            ->setCaption('Titre 1');
-
-        $car->addImage($image1);
-
-        $image2 = new Images();
-        $image2->setUrl("https://picsum.photos/400/200")
-            ->setCaption('Titre 2');
-
-        $car->addImage($image2);
-
-        
         $form = $this->createform(CarType::class, $car);
 
         //traitement des données - associations aux champs respectifs - validation
@@ -62,6 +49,13 @@ class CarController extends AbstractController
         //form complet et valid -> envoi bdd + message et redirection
         if($form->isSubmitted() && $form->IsValid())
         {
+            //gestion des images
+            foreach($car->getImages() as $image)
+            {
+                $image->setCars($car);
+                $manager->persist($image);
+            }
+
             $manager->persist($car);
             $manager->flush();
 
