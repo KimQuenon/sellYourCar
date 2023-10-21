@@ -75,6 +75,27 @@ class CarController extends AbstractController
 
     }
 
+
+    /**
+     * Éditer une voiture
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param Car $car
+     * @return Response
+     */
+    #[Route("cars/{slug}/edit", name:"cars_edit")]
+    public function edit(Request $request, EntityManagerInterface $manager, Car $car): Response
+    {
+        $form = $this->createForm(CarType::class, $car); //récupérer le formulaire
+        $form->handleRequest($request);
+
+        return $this->render("cars/edit.html.twig",[
+            "car"=> $car,
+            "myForm"=> $form->createView()
+        ]);
+    }
+
     /**
      * Afficher chaque voiture
      *

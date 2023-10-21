@@ -1,37 +1,36 @@
 {% extends "base.html.twig" %}
 
 
-{% block title %}Création d'une fiche de vente{% endblock %}
+{% block title %}Modification de la voiture: {{car.brand}} {{car.model}}{% endblock %}
 
 {% form_theme myForm _self %}
-{# {% form_theme myForm 'bootstrap_5_layout.html.twig' %} #}
 
 {% block body %}
+
     <div class="container">
-        <h1>Nouvelle voiture à vendre</h1>
+        <h1>Modification de l'annonce : <strong>{{car.brand}} {{car.model}}</strong></h1>
 
-        {{ form_start(myForm) }}
+        {{form_start(myForm)}}
 
-
-             {{form_widget(myForm)}}
-
-            <button type="submit" class="btn btn-primary mt-3">Terminer</button>
+            {{form_widget(myForm)}}
+            <button type="submit" class="btn btn-warning mt-3">Modifier</button>
 
 
+        {{form_end(myForm)}}
 
-        {{ form_end(myForm) }}
+
     </div>
+
 {% endblock %}
 
-
 {% block _car_images_widget %}
-    {# Définition du champs annonce_image, la variable correpond au champ annonce_image #}
-    <p>Ajoutez vos propres images</p>
+    {# Définition du champ annonce_image, la variable form correspond au hamp annonce_image #}
+    <p>Ici, vous pouvez ajouter vos propres images</p>
     {{form_widget(form)}}
     <input type="hidden" id="widgets-counter" value="0">
     <div class="form-group">
         <button type="button" id="add-image" class="btn btn-primary">Ajouter une image</button>
-    </div>
+    </div> 
 
 {% endblock %}
 
@@ -50,17 +49,14 @@
                     </div>
                     <div class="col">
                         {{form_widget(form.caption)}}
-                        {{form_errors(form.caption)}}
-                    </div>
+                        {{form_errors(form.caption)}}</div>
                 </div>
-
             </div>
             <div class="col-2">
                 <button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}">X</button>
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 {% block javascripts %}
@@ -96,8 +92,6 @@
         }
         updateCounter()
         handleDeleteButtons()
-        
-    
     
     </script>
 {% endblock %}
