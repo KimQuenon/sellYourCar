@@ -14,7 +14,9 @@
    <div class="container">
     <div class="row">
         <div class="col-md-8 mb-3">
-            {{car.content | raw | nl2br}}
+            <div>{{car.content | raw | nl2br}}</div>
+            <div>{{car.options | raw | nl2br}}</div>
+            
 
             <div class="bd-example">
                     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">

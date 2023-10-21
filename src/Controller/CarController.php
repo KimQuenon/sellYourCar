@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Car;
 use App\Form\CarType;
 use App\Repository\CarRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,10 +35,29 @@ class CarController extends AbstractController
      * @return Response
      */
     #[Route("/cars/new", name:"cars_create")]
-    public function create(): Response
+    public function create(Request $request, EntityManagerInterface $manager): Response
     {
         $car = new Car();
         $form = $this->createform(CarType::class, $car);
+
+        //traitement des données - associations aux champs respectifs - validation
+        $form->handleRequest($request);
+
+        //form complet et valid -> envoi bdd + message et redirection
+        if($form->isSubmitted() && $form->IsValid())
+        {
+            $manager->persist($car);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "La fiche de <strong>".$car->getBrand()." ".$car->getModel()."</strong> a bien été enregistrée."
+            );
+
+            return $this->redirectToRoute('cars_show', [
+                'slug'=> $car->getSlug()
+            ]);
+        }
 
         return $this->render("cars/new.html.twig",[
             'myForm' => $form->createView()

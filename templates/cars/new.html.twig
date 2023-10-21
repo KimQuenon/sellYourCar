@@ -3,7 +3,8 @@
 
 {% block title %}Création d'une fiche de vente{% endblock %}
 
-{% form_theme myForm _self %}
+{# {% form_theme myForm _self %} #}
+{# {% form_theme myForm 'bootstrap_5_layout.html.twig' %} #}
 
 {% block body %}
     <div class="container">
@@ -22,19 +23,6 @@
     </div>
 {% endblock %}
 
-
-{% block form_row %}
-    <div class="form-group">
-        <div class="row">
-            <div class="col-6">
-                {{form_label(form)}}
-            </div>
-            <div class="col-6">
-                {{form_widget(form)}}
-            </div>
-        </div>
-    </div>
-{% endblock %}
 
 {% block text_widget %}
     <input type="text" name="{{full_name}}" id="{{id}}" class="form-control">

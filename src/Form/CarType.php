@@ -38,8 +38,10 @@ class CarType extends AbstractType
     {
         $builder
             ->add('model', TextType::class, $this->getConfiguration('Modèle', 'Exemple : Giulia'))
-            ->add('brand', TextType::class, $this->getConfiguration('Modèle', 'Exemple : Alfa Romeo'))
-            ->add('slug', TextType::class, $this->getConfiguration('Slug', 'Adresse web (automatique)'))
+            ->add('brand', TextType::class, $this->getConfiguration('Marque', 'Exemple : Alfa Romeo'))
+            ->add('slug', TextType::class, $this->getConfiguration('Slug', 'Adresse web (automatique)',[
+                'required' => false
+            ]))
             ->add('coverImage', UrlType::class, $this->getConfiguration('Image de couverture', 'Veuillez fournir un URL valide'))
             ->add('km', IntegerType::class, $this->getConfiguration('Kilomètrage', 'Indiquez le nombre de kilomètres du véhicule...'))
             ->add('price', MoneyType::class, $this->getConfiguration('Prix', 'Indiquez le prix du véhicule...'))
