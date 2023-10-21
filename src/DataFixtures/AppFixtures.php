@@ -17,6 +17,9 @@ class AppFixtures extends Fixture
         $faker->addProvider(new Fakecar($faker)); //appel au faker de voiture
         $slugify = new Slugify(); //init d'un nouveau slug hors boucle! sinon bouclé x fois et perte d'optimisation
 
+        /**
+         * boucler 30 objets gérés par faker
+         */
         for ($i=1; $i <= 30 ; $i++) { 
             $car = new Car();
             $model = $faker->vehicleModel;

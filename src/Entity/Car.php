@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CarRepository;
@@ -57,6 +59,14 @@ class Car
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $options = null;
+
+    #[ORM\OneToMany(mappedBy: 'car', targetEntity: Images::class, orphanRemoval: true)]
+    private Collection $images;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     /**
      * init "slugification"
@@ -247,6 +257,36 @@ class Car
     public function setOptions(string $options): static
     {
         $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Images>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Images $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setCar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Images $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getCar() === $this) {
+                $image->setCar(null);
+            }
+        }
 
         return $this;
     }
