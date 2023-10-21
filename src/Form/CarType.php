@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Car;
+use App\Form\ImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class CarType extends AbstractType
 {
@@ -53,6 +55,11 @@ class CarType extends AbstractType
             ->add('transmission', TextType::class, $this->getConfiguration('Transmission', 'Automatique ou manuelle?'))
             ->add('content', TextareaType::class, $this->getConfiguration('Description', 'Décrivez le véhicule'))
             ->add('options', TextareaType::class, $this->getConfiguration('Options', 'Listez les options du véhicule'))
+            ->add('images', CollectionType::class,[
+                'entry_type'=> ImageType::class,
+                'allow_add'=> true,
+                'allow_delete'=>true
+            ])
         ;
     }
 
