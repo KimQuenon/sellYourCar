@@ -25,7 +25,6 @@ class AppFixtures extends Fixture
             $car = new Car();
             $model = $faker->vehicleModel;
             $brand = $faker->vehicleBrand;
-            $coverImage = $faker->imageUrl(1000,400);
             $carburant = $faker->vehicleFuelType;
             $year = $faker->biasedNumberBetween(1990, date('Y'), 'sqrt');
             $transmission = $faker->vehicleGearBoxType;
@@ -35,7 +34,7 @@ class AppFixtures extends Fixture
             $car->setModel($model)
                 ->setBrand($brand)
                 ->setContent($content)
-                ->setCoverImage($coverImage)
+                ->setCoverImage('https://picsum.photos/1000/400')
                 ->setKm(rand(0,80000))
                 ->setPrice(rand(15000,50000))
                 ->setOwners(rand(1,3))
