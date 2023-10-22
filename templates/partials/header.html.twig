@@ -18,9 +18,20 @@
 
                     </ul>
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Mon compte</a>
-                        </li>
+                        {# si un utilisateur est connecté #}
+                        {% if app.user %}
+                            <li class="nav-item">
+                                <a href="{{path('account_logout')}}" class="nav-link" id="logout-link">Déconnexion</a>
+                            </li>
+
+                        {% else %}
+                            <li class="nav-item">
+                                <a href="{{path('account_register')}}" class="nav-link">Inscription</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{path('account_login')}}" class="nav-link">Connexion</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -34,3 +45,16 @@
                 </div>
             </div>
         {% endfor %}
+
+    <script>
+        // Boite de dialogue pour confirmer la déconnexion
+        var logoutLink = document.getElementById('logout-link');
+
+        if (logoutLink) {
+            logoutLink.addEventListener('click', function (event) {
+                if (!confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                    event.preventDefault(); // Annule la déconnexion si l'utilisateur annule la confirmation
+                }
+            });
+        }
+    </script>
