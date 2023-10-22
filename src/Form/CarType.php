@@ -51,12 +51,20 @@ class CarType extends AbstractType
             ->add('owners', IntegerType::class, $this->getConfiguration('Nombre de propriétaires', 'Indiquez le nombre de propriétaires du véhicule...'))
             ->add('cylinder', NumberType::class, $this->getConfiguration('Cylindrée', 'Indiquez la cylindrée du véhicule...'))
             ->add('power', IntegerType::class, $this->getConfiguration('Puissance', 'Indiquez la puissance en chevaux du véhicule...'))
-            ->add('carburant', TextType::class, $this->getConfiguration('Carburant', 'Indiquez le type de carburant consommé par le véhicule...'))
+            ->add('carburant', ChoiceType::class, [
+                'choices'=>[
+                    'Essence'=>'essence',
+                    'Diesel'=>'diesel',
+                    'Electrique'=>'electrique',
+                    'Hybride'=>'hybride',
+                    'LPG'=>'lpg',
+                    'CNG'=>'cng',
+                ]])
             ->add('year', IntegerType::class, $this->getConfiguration('Année de mise en circulation', 'Indiquez l\'année de mise en circulation du véhicule...'))
             ->add('transmission', ChoiceType::class, [
                 'choices'  => [
-                    'Automatique' => true,
-                    'Manuel' => false,
+                    'Automatique' => 'Automatique',
+                    'Manuel' => 'Manuel',
                 ]])
             ->add('content', TextareaType::class, $this->getConfiguration('Description', 'Décrivez le véhicule'))
             ->add('options', TextareaType::class, $this->getConfiguration('Options', 'Listez les options du véhicule'))

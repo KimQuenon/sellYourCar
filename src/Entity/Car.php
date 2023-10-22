@@ -54,7 +54,6 @@ class Car
     private ?int $power = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 5, max:15, minMessage:"Le type de carburant doit faire plus de 5 caractères.", maxMessage: "Le type de carburant ne doit pas faire plus de 15 caractères.")]
     private ?string $carburant = null;
 
     #[ORM\Column]
