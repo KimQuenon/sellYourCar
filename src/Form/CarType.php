@@ -53,6 +53,7 @@ class CarType extends AbstractType
             ->add('power', IntegerType::class, $this->getConfiguration('Puissance', 'Indiquez la puissance en chevaux du véhicule...'))
             ->add('carburant', ChoiceType::class, [
                 'choices'=>[
+                    //options = visuel, valeur = dans la bdd
                     'Essence'=>'essence',
                     'Diesel'=>'diesel',
                     'Electrique'=>'electrique',

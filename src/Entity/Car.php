@@ -74,6 +74,10 @@ class Car
     #[Assert\Valid()]
     private Collection $images;
 
+    #[ORM\ManyToOne(inversedBy: 'cars')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $author = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -298,6 +302,18 @@ class Car
                 $image->setCar(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }
