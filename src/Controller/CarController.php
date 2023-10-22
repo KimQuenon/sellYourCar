@@ -56,6 +56,8 @@ class CarController extends AbstractController
                 $manager->persist($image);
             }
 
+            $car->setAuthor($this->getUser());
+
             $manager->persist($car);
             $manager->flush();
 

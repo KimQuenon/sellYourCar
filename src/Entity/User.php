@@ -2,15 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -56,6 +58,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->cars = new ArrayCollection();
     }
 
+    /**
+     * Créer un slug autoamtiquement avec le nom et le prénom de l'user
+     *
+     * @return void
+     */
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function initializeslug()
+    {
+        if(empty($this->slug))
+        {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->firstName.' '.$this->lastName.' '.uniqid());
+        }
+    }
+    
     public function getId(): ?int
     {
         return $this->id;

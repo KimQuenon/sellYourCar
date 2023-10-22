@@ -46,23 +46,20 @@ class AppFixtures extends Fixture
         
         //gestion des users
         $users = []; //init d'un tab pour recup des users pour les annonces
-        $genres = ['male', 'femelle'];
 
         for($u = 1; $u <= 10; $u++)
         {
             $user = new User();
-            $genre = $faker->randomElement($genres);
-            $picture = 'https://picsum.photos/seed/picsum/500/500';
-
+            
             $hash = $this->passwordHasher->hashPassword($user, 'password');
 
-            $user->setFirstName($faker->firstName($genre))
+            $user->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName())
                 ->setEmail($faker->email())
                 ->setIntroduction($faker->sentence())
                 ->setDescription('<p>'.join('<p></p>',$faker->paragraphs(3)).'</p>')
                 ->setPassword($hash)
-                ->setPicture($picture);
+                ->setPicture('https://picsum.photos/seed/picsum/500/500');
 
                 $manager->persist($user);
 
@@ -76,28 +73,21 @@ class AppFixtures extends Fixture
          */
         for ($i=1; $i <= 30 ; $i++) { 
             $car = new Car();
-            $model = $faker->vehicleModel;
-            $brand = $faker->vehicleBrand;
-            $carburant = $faker->vehicleFuelType;
-            $year = $faker->biasedNumberBetween(1990, date('Y'), 'sqrt');
-            $transmission = $faker->vehicleGearBoxType;
-            $content= '<p>'.join('</p><p>', $faker->paragraphs(2)).'</p>';
-            $options= '<p>'.join('</p><p>', $faker->paragraphs(5)).'</p>';
 
-            $car->setModel($model)
-                ->setBrand($brand)
-                ->setContent($content)
+            $car->setModel($faker->vehicleModel)
+                ->setBrand($faker->vehicleBrand)
                 ->setCoverImage('https://picsum.photos/1000/400')
                 ->setKm(rand(0,80000))
                 ->setPrice(rand(15000,50000))
                 ->setOwners(rand(1,3))
                 ->setCylinder(rand(1,12))
                 ->setPower(rand(80,500))
-                ->setCarburant($carburant)
-                ->setYear($year)
-                ->setTransmission($transmission)
-                ->setContent($content)
-                ->setOptions($options);
+                ->setCarburant($faker->vehicleFuelType)
+                ->setYear($faker->biasedNumberBetween(1990, date('Y'), 'sqrt'))
+                ->setTransmission($faker->vehicleGearBoxType)
+                ->setContent('<p>'.join('</p><p>', $faker->paragraphs(2)).'</p>')
+                ->setOptions('<p>'.join('</p><p>', $faker->paragraphs(5)).'</p>')
+                ->setAuthor($users[rand(0, count($users)-1)]); //rand pour un id d'author
 
             //gestion de la galerie associée
             for ($g=1; $g <= rand(2,5); $g++)
