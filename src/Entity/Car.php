@@ -24,11 +24,11 @@ class Car
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 2, max:250, minMessage:"Le modèle doit faire plus de 2 caractères.", maxMessage: "Le modèle ne doit pas faire plus de 250 caractères.")]
+    #[Assert\NotBlank(message: "Veuillez renseigner le modèle du véhicule")]
     private ?string $model = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 5, max:250, minMessage:"La marque doit faire plus de 5 caractères.", maxMessage: "La marque ne doit pas faire plus de 250 caractères.")]
+    #[Assert\NotBlank(message: "Veuillez renseigner la marque du véhicule")]
     private ?string $brand = null;
 
     #[ORM\Column(length: 255)]
@@ -39,27 +39,35 @@ class Car
     private ?string $coverImage = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Veuillez renseigner le kilométrage du véhicule")]
     private ?int $km = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Veuillez renseigner le prix du véhicule")]
     private ?float $price = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Veuillez renseigner le nombre de propriétaires du véhicule")]
     private ?int $owners = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Veuillez renseigner la cylindrée du véhicule")]
     private ?float $cylinder = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Veuillez renseigner la puissance du véhicule")]
     private ?int $power = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Veuillez renseigner le type de carburant consommé par le véhicule")]
     private ?string $carburant = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Veuillez renseigner l'année de mise en circulation du véhicule")]
     private ?int $year = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Veuillez renseigner le type de transmission du véhicule")]
     private ?string $transmission = null;
 
     #[ORM\Column(type: Types::TEXT)]
