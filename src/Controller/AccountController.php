@@ -2,27 +2,33 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AccountController extends AbstractController
-{
+    {
     /**
-     * Page de connexion
+     * système de connexion
      *
+     * @param AuthenticationUtils $utils
      * @return Response
      */
     #[Route('/login', name: 'account_login')]
-    public function index(): Response
+    public function index(AuthenticationUtils $utils): Response
     {
+        $error = $utils->getLastAuthenticationError(); //récupérer la dernière erreur engendrée
+        $username = $utils->getLastUsername(); //récupérer le dernier username à s'être connecté
+
         return $this->render('account/index.html.twig', [
-            'controller_name' => 'AccountController',
+            'hasError' => $error !== null, //pas nul => afficher erreur
+            'username'=> $username
         ]);
     }
 
     /**
-     * Déconnexion
+     * système de déconnexion
      *
      * @return Response
      */
