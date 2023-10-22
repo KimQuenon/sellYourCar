@@ -122,6 +122,31 @@ class CarController extends AbstractController
         ]);
     }
 
+    #[Route("cars/{slug}/delete", name:"cars_delete")]
+    public function deleteCars(Car $car, EntityManagerInterface $manager): Response
+    {
+        if ($car->getAuthor() === $this->getUser()) {
+            $manager->remove($car);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "L'annonce <strong>".$car->getBrand()." ".$car->getModel()."</strong> a bien été supprimée!"
+            );
+        } else {
+            $this->addFlash(
+                'danger',
+                "Vous n'avez pas la permission de supprimer cette annonce."
+            );
+        }
+
+        return $this->redirectToRoute('cars_index');
+
+        return $this->render('cars/delete.html.twig', [
+            
+        ]);
+    }
+
     /**
      * Afficher chaque voiture
      *
