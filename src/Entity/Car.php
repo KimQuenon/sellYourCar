@@ -24,7 +24,7 @@ class Car
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 8, max:250, minMessage:"Le modèle doit faire plus de 8 caractères.", maxMessage: "Le modèle ne doit pas faire plus de 250 caractères.")]
+    #[Assert\Length(min: 2, max:250, minMessage:"Le modèle doit faire plus de 2 caractères.", maxMessage: "Le modèle ne doit pas faire plus de 250 caractères.")]
     private ?string $model = null;
 
     #[ORM\Column(length: 255)]
@@ -61,7 +61,6 @@ class Car
     private ?int $year = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 5, max:12, minMessage:"Le type de transmission doit faire plus de 5 caractères.", maxMessage: "Le type de transmission ne doit pas faire plus de 12 caractères.")]
     private ?string $transmission = null;
 
     #[ORM\Column(type: Types::TEXT)]

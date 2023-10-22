@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -52,7 +53,11 @@ class CarType extends AbstractType
             ->add('power', IntegerType::class, $this->getConfiguration('Puissance', 'Indiquez la puissance en chevaux du véhicule...'))
             ->add('carburant', TextType::class, $this->getConfiguration('Carburant', 'Indiquez le type de carburant consommé par le véhicule...'))
             ->add('year', IntegerType::class, $this->getConfiguration('Année de mise en circulation', 'Indiquez l\'année de mise en circulation du véhicule...'))
-            ->add('transmission', TextType::class, $this->getConfiguration('Transmission', 'Automatique ou manuelle?'))
+            ->add('transmission', ChoiceType::class, [
+                'choices'  => [
+                    'Automatique' => true,
+                    'Manuel' => false,
+                ]])
             ->add('content', TextareaType::class, $this->getConfiguration('Description', 'Décrivez le véhicule'))
             ->add('options', TextareaType::class, $this->getConfiguration('Options', 'Listez les options du véhicule'))
             ->add('images', CollectionType::class,[
