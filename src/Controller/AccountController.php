@@ -88,6 +88,14 @@ class AccountController extends AbstractController
         ]);
     }
 
+    #[Route("/account/profile/{slug}", name:"account_profile")]
+    public function profile(string $slug, User $user): Response
+    {
+        return $this->render("account/profile.html.twig",[
+            'user'=>$user
+        ]);
+    }
+
     /**
      * Modifier le profil d'utilisateur
      *

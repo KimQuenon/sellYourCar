@@ -122,6 +122,13 @@ class CarController extends AbstractController
         ]);
     }
 
+    /**
+     * Supprimer une voiture
+     *
+     * @param Car $car
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route("cars/{slug}/delete", name:"cars_delete")]
     public function deleteCars(Car $car, EntityManagerInterface $manager): Response
     {
