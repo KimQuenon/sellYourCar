@@ -95,8 +95,8 @@ class AccountController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route("/account/profile", name:"account_profile")]
-    public function profile(Request $request, EntityManagerInterface $manager): Response
+    #[Route("/account/edit", name:"account_edit")]
+    public function edit(Request $request, EntityManagerInterface $manager): Response
     {
         $user = $this->getUser(); //récupère l'user connecté
         $form = $this->createForm(AccountType::class, $user);
@@ -113,8 +113,20 @@ class AccountController extends AbstractController
             );
         }
 
-        return $this->render("account/profile.html.twig",[
+        return $this->render("account/edit.html.twig",[
             'myForm'=>$form->createView()
         ]);
     }
+
+    #[Route("/account/cars", name:"account_cars")]
+    public function displayCars()
+    {
+        $user = $this->getUser(); // Récupérer l'utilisateur connecté
+        $cars = $user->getCars(); // Récupérer les voitures liées à l'utilisateur
+    
+        return $this->render('account/cars.html.twig', [
+            'cars' => $cars,
+        ]);
+    }
+
 }

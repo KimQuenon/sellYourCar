@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos annonces{% endblock %}
+
+{% block body %}
+    <div class="container full">
+    {% if cars|length > 0 %}
+        {% if cars|length == 1 %}
+            <h1>Vos avez posté {{ cars|length }} annonce:</h1>
+        {% else %}
+            <h1>Vos avez posté {{ cars|length }} annonces:</h1>
+        {% endif %}
+        <p>Désireux d'étoffer vos ventes ?</p>
+        <a href="{{ path('cars_create') }}" class="btn btn-primary mb-3">Ajouter une annonce</a>
+        <div class="row">
+            {% for car in cars %}
+                {% set url = path('cars_show', {'slug':car.slug}) %}
+                <div class="col-md-4">
+                    <div class="card bg-light mb-3">
+                        <div class="card-header text-center">
+                            {{car.km}} km, <strong>{{car.price}}€</strong>
+                        </div>
+                        <a href="{{url}}">
+                            <img src="{{car.coverImage}}" alt="image de la voiture {{car.model}}" class="starsimg">
+                        </a>
+                        <div class="card-body">
+                            <h4 class="card-title">{{car.model}}</h4>
+                            <h5 class="card-title">{{car.brand}}</h5>
+                            <a href="{{ path('cars_edit', {'slug': car.slug}) }}" class="btn btn-primary">Modifier</a>
+                            {# <a href="{{ path('cars_delete', {'slug': car.slug}) }}" class="btn btn-secondary">Supprimer</a> #}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1>Vous n'avez pas encore posté d'annonce</h1>
+        <p>Il n'est jamais trop tard pour vendre...</p>
+        <a href="{{ path('cars_create') }}" class="btn btn-primary">Ajouter une annonce</a>
+    {% endif %}
+    </div>
+{% endblock %}
