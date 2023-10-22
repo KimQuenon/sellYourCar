@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\DeleteType;
 use App\Form\AccountType;
 use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -123,6 +124,64 @@ class AccountController extends AbstractController
 
         return $this->render("account/edit.html.twig",[
             'myForm'=>$form->createView()
+        ]);
+    }
+
+    /**
+     * Supprimer le compte utilisateur (étape 1).
+     *
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $hasher
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route("/account/delete", name: "account_delete")]
+    public function deleteAccount(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(DeleteType::class);
+
+        //si l'user n'est pas connecté, renvoi vers connexion
+        if (!$user) {
+
+            $this->addFlash(
+                'danger',
+                'Connectez-vous à votre compte avant de le supprimer.'
+            );
+            return $this->redirectToRoute('account_login');
+        }
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $submittedEmail = $data['email'];
+            $submittedPassword = $data['password'];
+
+            if ($user->getEmail() === $submittedEmail) {
+                $isPasswordValid = $hasher->isPasswordValid($user, $submittedPassword);
+
+                if ($isPasswordValid) {
+                    $manager->remove($user);
+                    $manager->flush();
+
+                    $this->addFlash(
+                        'success',
+                        'Votre compte a été supprimé avec succès.'
+                    );
+
+                    return $this->redirectToRoute('homepage');
+                }
+            }
+
+            $this->addFlash(
+                'danger',
+                'L\'adresse e-mail ou le mot de passe est incorrect.'
+            );
+        }
+
+        return $this->render('account/delete.html.twig', [
+            'myForm' => $form->createView()
         ]);
     }
 

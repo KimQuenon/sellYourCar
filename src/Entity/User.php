@@ -65,7 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Car::class)]
+    #[ORM\OneToMany(mappedBy:"author", targetEntity:Car::class, cascade:["remove"])]
     private Collection $cars;
 
     public function __construct()
