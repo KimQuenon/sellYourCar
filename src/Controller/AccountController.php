@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -76,6 +77,27 @@ class AccountController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            //gestion de l'image
+
+            $file = $form['picture']->getData(); //recup données dans le form
+
+            //si champs rempli
+            if(!empty($file))
+            {
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); //recup nom du fichier sans l'extension
+                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename); //enlève les caractères spéciaux
+                $newFilename = $safeFilename."-".uniqid().'.'.$file->guessExtension(); //nom unique
+                try{
+                    $file->move(
+                        $this->getParameter('uploads_directory'), //déplacement du fichier
+                        $newFilename
+                    );
+                }catch(FileException $e){
+                    return $e->getMessage();
+                }
+                $user->setPicture($newFilename);
+            }
+
             //gestion de l'inscription dans la bdd
             $hash = $hasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hash);
@@ -92,14 +114,6 @@ class AccountController extends AbstractController
         ]);
     }
 
-    #[Route("/account/profile/{slug}", name:"account_profile")]
-    public function profile(string $slug, User $user): Response
-    {
-        return $this->render("account/profile.html.twig",[
-            'user'=>$user
-        ]);
-    }
-
     /**
      * Modification d'user
      *
@@ -110,12 +124,23 @@ class AccountController extends AbstractController
     #[Route("/account/edit", name:"account_edit")]
     public function edit(Request $request, EntityManagerInterface $manager): Response
     {
-        $user = $this->getUser(); //récupère l'user connecté
+        $user = $this->getUser(); //recup l'user connecté
+
+        $filename = $user->getPicture();
+        if(!empty($filename)){
+            $user->setPicture(
+                new File($this->getParameter('uploads_directory').'/'.$user->getPicture())
+            );
+        }
+        
         $form = $this->createForm(AccountType::class, $user);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
+            $user->setSlug('')
+            ->setPicture($filename);
+
             $manager->persist($user);
             $manager->flush();
 
@@ -256,6 +281,22 @@ class AccountController extends AbstractController
     
         return $this->render('account/cars.html.twig', [
             'cars' => $cars,
+        ]);
+    }
+
+
+    /**
+     * Afficher le profil
+     *
+     * @param string $slug
+     * @param User $user
+     * @return Response
+     */
+    #[Route("/account/profile/{slug}", name:"account_profile")]
+    public function profile(string $slug, User $user): Response
+    {
+        return $this->render("account/profile.html.twig",[
+            'user'=>$user
         ]);
     }
 
