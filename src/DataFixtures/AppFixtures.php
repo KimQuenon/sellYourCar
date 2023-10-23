@@ -39,7 +39,6 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-        //CHANGER NOM DES FAKERS
         $faker = Factory::create('fr_FR');
         $faker->addProvider(new Fakecar($faker)); //appel au faker de voiture
         $slugify = new Slugify(); //init d'un nouveau slug hors boucle! sinon bouclé x fois et perte d'optimisation
@@ -59,7 +58,7 @@ class AppFixtures extends Fixture
                 ->setIntroduction($faker->sentence())
                 ->setDescription('<p>'.join('<p></p>',$faker->paragraphs(3)).'</p>')
                 ->setPassword($hash)
-                ->setPicture('https://picsum.photos/seed/picsum/500/500');
+                ->setPicture('');
 
                 $manager->persist($user);
 
