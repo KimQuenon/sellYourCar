@@ -5,7 +5,10 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\DeleteType;
 use App\Form\AccountType;
+use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
+use App\Form\PasswordUpdateType;
+use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -98,7 +101,7 @@ class AccountController extends AbstractController
     }
 
     /**
-     * Modifier le profil d'utilisateur
+     * Modification d'user
      *
      * @param Request $request
      * @param EntityManagerInterface $manager
@@ -127,8 +130,59 @@ class AccountController extends AbstractController
         ]);
     }
 
+
     /**
-     * Supprimer le compte utilisateur (étape 1).
+     * Modification du password
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param UserPasswordHasherInterface $hasher
+     * @return Response
+     */
+    #[Route("/account/password-update", name:"account_password")]
+    public function updatePassword(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher):Response
+    {
+        $passwordUpdate = new PasswordUpdate();
+        $user = $this->getUser();
+        $form = $this->createForm(PasswordUpdateType::class, $passwordUpdate);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //verif mdp bdd & mdp du form
+            if (!password_verify($passwordUpdate->getOldPassword(), $user->getPassword())) {
+                $form->get('oldPassword')->addError(new FormError("Le mot de passe que vous avez renseigné n'est pas votre mot de passe actuel"));
+            }else{
+                $newPassword = $passwordUpdate->getNewPassword();
+                
+                // verif si new mdp == old mdp
+                if ($newPassword === $passwordUpdate->getOldPassword()) {
+                    $form->get('newPassword')->addError(new FormError("Le nouveau mot de passe ne peut être identique à l'ancien mot de passe"));
+                } else {
+                    $hash = $hasher->hashPassword($user, $newPassword);
+        
+                    $user->setPassword($hash);
+                    $manager->persist($user);
+                    $manager->flush();
+        
+                    $this->addFlash(
+                        'success',
+                        'Le nouveau mot de passe a été modifié avec succès'
+                    );
+        
+                    return $this->redirectToRoute('homepage');
+                }
+            }
+        }
+        
+        
+
+        return $this->render("account/password.html.twig",[
+            'myForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Supprimer l'user
      *
      * @param Request $request
      * @param UserPasswordEncoderInterface $hasher
@@ -158,10 +212,13 @@ class AccountController extends AbstractController
             $submittedEmail = $data['email'];
             $submittedPassword = $data['password'];
 
+            //verif si email est dans bdd
             if ($user->getEmail() === $submittedEmail) {
                 $isPasswordValid = $hasher->isPasswordValid($user, $submittedPassword);
 
+                //verif mdp
                 if ($isPasswordValid) {
+                    //remove si tout est ok
                     $manager->remove($user);
                     $manager->flush();
 
@@ -185,8 +242,14 @@ class AccountController extends AbstractController
         ]);
     }
 
+
+    /**
+     * Afficher les voitures de l'user
+     *
+     * @return Response
+     */
     #[Route("/account/cars", name:"account_cars")]
-    public function displayCars()
+    public function displayCars(): Response
     {
         $user = $this->getUser(); // Récupérer l'utilisateur connecté
         $cars = $user->getCars(); // Récupérer les voitures liées à l'utilisateur
