@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\DeleteType;
 use App\Form\AccountType;
+use App\Entity\UserImgModify;
 use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
+use App\Form\UserImgModifyType;
 use App\Form\PasswordUpdateType;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
@@ -155,9 +157,130 @@ class AccountController extends AbstractController
             'myForm'=>$form->createView()
         ]);
     }
+    
+    /**
+     * Suppression d'user
+     *
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $hasher
+     * @param EntityManagerInterface $manager
+     * @param TokenStorageInterface $tokenStorage
+     * @return Response
+     */
+    #[Route("/account/delete", name: "account_delete")]
+    public function deleteAccount(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager, TokenStorageInterface $tokenStorage): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(DeleteType::class);
+
+        //si l'user n'est pas connecté, renvoi vers connexion
+        if (!$user) {
+
+            $this->addFlash(
+                'danger',
+                'Connectez-vous à votre compte avant de le supprimer.'
+            );
+            return $this->redirectToRoute('account_login');
+        }
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $submittedEmail = $data['email'];
+            $submittedPassword = $data['password'];
+
+            //verif si email est dans bdd
+            if ($user->getEmail() === $submittedEmail) {
+                $isPasswordValid = $hasher->isPasswordValid($user, $submittedPassword);
+
+                //verif mdp
+                if ($isPasswordValid) {
+                    //forcer la déconnexion
+                    $tokenStorage->setToken(null);
+                    //remove si tout est ok
+                    $manager->remove($user);
+                    $manager->flush();
+
+                    $this->addFlash(
+                        'success',
+                        'Votre compte a été supprimé avec succès.'
+                    );
+
+                    return $this->redirectToRoute('homepage');
+                }
+            }
+
+            $this->addFlash(
+                'danger',
+                'L\'adresse e-mail ou le mot de passe est incorrect.'
+            );
+        }
+
+        return $this->render('account/delete.html.twig', [
+            'myForm' => $form->createView()
+        ]);
+    }
 
     /**
-     * Suppression de l'image
+     * Modification d'avatar
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route("account/imgmodify", name:"account_modifimg")]
+    public function imgModify(Request $request, EntityManagerInterface $manager):Response
+    {
+        $imgModify = new UserImgModify();
+        $user = $this->getUser();
+        $form = $this->createForm(UserImgModifyType::class, $imgModify);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+
+            if(!empty($user->getPicture()))
+            {
+                unlink($this->getParameter('uploads_directory').'/'.$user->getPicture());
+            }
+
+            //gestion de l'image
+            $file = $form['newPicture']->getData();
+            if(!empty($file))
+            {
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename); //enlève les caractères spéciaux
+                $newFilename = $safeFilename."-".uniqid().'.'.$file->guessExtension();
+                try{
+                    $file->move(
+                        $this->getParameter('uploads_directory'),
+                        $newFilename
+                    );
+                }catch(FileException $e){
+                    return $e->getMessage();
+                }
+                $user->setPicture($newFilename);
+            }
+            $manager->persist($user);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre avatar a été modifié avec succès'    
+            );
+
+            return $this->redirectToRoute('homepage');
+
+
+        }
+
+        return $this->render("account/imgModify.html.twig",[
+            'myForm'=>$form->createView()
+        ]);
+    }
+    /**
+     * Suppression d'avatar
      *
      * @param EntityManagerInterface $manager
      * @return Response
@@ -231,69 +354,6 @@ class AccountController extends AbstractController
         ]);
     }
 
-    /**
-     * Supprimer l'user
-     *
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $hasher
-     * @param EntityManagerInterface $manager
-     * @param TokenStorageInterface $tokenStorage
-     * @return Response
-     */
-    #[Route("/account/delete", name: "account_delete")]
-    public function deleteAccount(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager, TokenStorageInterface $tokenStorage): Response
-    {
-        $user = $this->getUser();
-        $form = $this->createForm(DeleteType::class);
-
-        //si l'user n'est pas connecté, renvoi vers connexion
-        if (!$user) {
-
-            $this->addFlash(
-                'danger',
-                'Connectez-vous à votre compte avant de le supprimer.'
-            );
-            return $this->redirectToRoute('account_login');
-        }
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $submittedEmail = $data['email'];
-            $submittedPassword = $data['password'];
-
-            //verif si email est dans bdd
-            if ($user->getEmail() === $submittedEmail) {
-                $isPasswordValid = $hasher->isPasswordValid($user, $submittedPassword);
-
-                //verif mdp
-                if ($isPasswordValid) {
-                    //forcer la déconnexion
-                    $tokenStorage->setToken(null);
-                    //remove si tout est ok
-                    $manager->remove($user);
-                    $manager->flush();
-
-                    $this->addFlash(
-                        'success',
-                        'Votre compte a été supprimé avec succès.'
-                    );
-
-                    return $this->redirectToRoute('homepage');
-                }
-            }
-
-            $this->addFlash(
-                'danger',
-                'L\'adresse e-mail ou le mot de passe est incorrect.'
-            );
-        }
-
-        return $this->render('account/delete.html.twig', [
-            'myForm' => $form->createView()
-        ]);
-    }
 
 
     /**
