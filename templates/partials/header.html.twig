@@ -20,11 +20,19 @@
                     <ul class="navbar-nav ms-auto">
                         {# si un utilisateur est connecté #}
                         {% if app.user %}
-                            <li class="nav-item">
+                            {# <li class="nav-item">
                                 <a href="{{path('account_profile', {'slug':app.user.slug})}}" class="nav-link">Mon profil</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{path('account_logout')}}" class="nav-link" id="logout-link">Déconnexion</a>
+                            </li>#}
+
+                            <li class="nav-item" aria-label="Button group with nested dropdown"  style="width:200px">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle show" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{app.user.firstName}} {{app.user.lastName}}</button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 35px, 0px);" data-popper-placement="top-start">
+                                    <a class="dropdown-item" href="#">My Profile</a>
+                                    <a class="dropdown-item" href="#">My announce</a>
+                                    <a href="{{path('account_logout')}}" class="dropdown-item bg-light" id="logout-link">Déconnexion</a>
+                                    </div>
+                                </div>
                             </li>
 
                         {% else %}

@@ -33,3 +33,7 @@
 .full{
     min-height:70vh;
 }
+
+a.dropdown-item.bg-light:hover {
+    color: red;
+}
