@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\TooManyLoginAttemptsAuthenticationException;
 
 class AccountController extends AbstractController
@@ -239,7 +240,7 @@ class AccountController extends AbstractController
      * @return Response
      */
     #[Route("/account/delete", name: "account_delete")]
-    public function deleteAccount(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager): Response
+    public function deleteAccount(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager, TokenStorageInterface $tokenStorage): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(DeleteType::class);
@@ -268,6 +269,7 @@ class AccountController extends AbstractController
                 //verif mdp
                 if ($isPasswordValid) {
                     //remove si tout est ok
+                    $tokenStorage->setToken(null);
                     $manager->remove($user);
                     $manager->flush();
 
@@ -276,7 +278,7 @@ class AccountController extends AbstractController
                         'Votre compte a été supprimé avec succès.'
                     );
 
-                    return $this->redirectToRoute('homepage');
+                    return $this->redirectToRoute('account_logout');
                 }
             }
 
