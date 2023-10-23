@@ -126,6 +126,7 @@ class CarController extends AbstractController
                 'slug' => $car->getSlug()
             ]);
         }
+        
         return $this->render("cars/edit.html.twig",[
             "car"=> $car,
             "myForm"=> $form->createView()
