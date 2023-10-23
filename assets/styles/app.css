@@ -37,3 +37,24 @@
 a.dropdown-item.bg-light:hover {
     color: red;
 }
+
+.avatar{
+    width:50px;
+    height:50px;
+    border-radius: 100%;
+    margin-left: 10px;
+}
+
+.bigAvatar {
+    margin:0 auto;
+    width: 380px; /* Ajustez la taille du conteneur selon vos besoins */
+    height: 380px; /* Ajustez la taille du conteneur selon vos besoins */
+    border-radius: 50%; /* Pour créer un cercle */
+    overflow: hidden; /* Cache toute partie de l'image en dehors du cercle */
+}
+
+.bigAvatar img {
+    width: 100%; /* Remplit tout l'espace du conteneur */
+    height: 100%; /* Remplit tout l'espace du conteneur */
+    object-fit: cover; /* Ajuste l'image sans déformation */
+}

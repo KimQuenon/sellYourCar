@@ -300,7 +300,7 @@ class AccountController extends AbstractController
                 'Votre avatar a bien été supprimé'
             );
         }
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('account_profile');
     }
 
 
@@ -384,7 +384,7 @@ class AccountController extends AbstractController
     public function profile(string $slug, User $user): Response
     {
         return $this->render("account/profile.html.twig",[
-            'user'=>$user
+            'user'=>$user,
         ]);
     }
 

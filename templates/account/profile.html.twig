@@ -4,6 +4,46 @@
 
 {% block body %}
    <div class="container full">
-    <h1>Bienvenue {{user.firstName}} {{user.lastName}} !</h1>
+      <h1>Bienvenue <strong>{{user.firstName}} {{user.lastName}}</strong> !</h1>
+      <div class="row col-md-11 mt-4 justify-content-center">
+         <div class="row justify-content-between align-items-center">
+            <div class="col-md-5">
+               <h3>C'est un plaisir de vous revoir !</h3>
+               <p class="mt-2">Que souhaitez-vous faire, {{user.firstName}}?</p>
+               <div class="d-grid gap-2">
+                  <a href="{{path('cars_create')}}" class="btn btn-primary" type="button">Poster une annonce</a>
+                  <a href="{{path('account_edit')}}" class="btn btn-secondary" type="button">Modifier le profil</a>
+                  <a href="{{path('account_delete')}}" class="btn btn-danger" type="button">Supprimer le profil</a>
+               </div>
+            </div>
+            {% if app.user.picture %}
+            <div class="col-md-4">
+               <div class="bigAvatar d-flex justify-content-center">
+                  <img src="/uploads/{{app.user.picture}}" alt="avatar de {{app.user.firstName}} {{app.user.lastName}}">
+               </div>
+               <div class='row mt-4 justify-content-between'>
+                  <div class="col-6 text-center">
+                        <a href="{{path('account_modifimg')}}" type="button" class="btn btn-warning">Modifier l'avatar</a>
+                  </div>
+                  <div class="col-6 text-center">
+                        <a href="{{path('account_delimg')}}" type="button" class="btn btn-danger">Supprimer l'avatar</a>
+                  </div>
+               </div>
+            </div>
+            {% else %}
+            <div class="col-md-4">
+               <div class="bigAvatar d-flex justify-content-center">
+                  <img src="https://picsum.photos/seed/picsum/200/300" alt="avatar de {{app.user.firstName}} {{app.user.lastName}}">
+               </div>
+               <div class='row mt-4 justify-content-center'>
+                  <div class="col-6 text-center">
+                        <a href="{{path('account_modifimg')}}" type="button" class="btn btn-success">+ Ajouter un avatar</a>
+                  </div>
+               </div>
+            </div>
+            {% endif %}
+         </div>
+      </div>
    </div>
+
 {% endblock %}
