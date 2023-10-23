@@ -89,33 +89,43 @@ class CarController extends AbstractController
     #[Route("cars/{slug}/edit", name:"cars_edit")]
     public function edit(Request $request, EntityManagerInterface $manager, Car $car): Response
     {
-        $form = $this->createForm(CarType::class, $car); //récupérer le formulaire
-        $form->handleRequest($request);
+        if ($car->getAuthor() === $this->getUser()) {
+            $form = $this->createForm(CarType::class, $car); //récupérer le formulaire
+            $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+            if($form->isSubmitted() && $form->isValid())
+            {
 
-              // gestion des images 
-              foreach($car->getImages() as $image)
-              {
-                  $image->setCar($car);
-                  $manager->persist($image);
-              }
+                // gestion des images 
+                foreach($car->getImages() as $image)
+                {
+                    $image->setCar($car);
+                    $manager->persist($image);
+                }
 
-              $manager->persist($car);
-              $manager->flush();
+                $manager->persist($car);
+                $manager->flush();
 
-              $this->addFlash(
-                'success',
-                "L'annonce <strong>".$car->getBrand()." ".$car->getModel()."</strong> a bien été modifiée!"
-              );
+                $this->addFlash(
+                    'success',
+                    "L'annonce <strong>".$car->getBrand()." ".$car->getModel()."</strong> a bien été modifiée!"
+                );
 
-              return $this->redirectToRoute('cars_show',[
+                return $this->redirectToRoute('cars_show',[
+                    'slug' => $car->getSlug()
+                ]);
+
+            }
+        }else{
+            $this->addFlash(
+                'danger',
+                "Vous n'êtes pas autorisé à modifier cette annonce."
+            );
+
+            return $this->redirectToRoute('cars_show',[
                 'slug' => $car->getSlug()
-              ]);
-
+            ]);
         }
-
         return $this->render("cars/edit.html.twig",[
             "car"=> $car,
             "myForm"=> $form->createView()
