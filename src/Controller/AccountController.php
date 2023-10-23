@@ -237,6 +237,7 @@ class AccountController extends AbstractController
      * @param Request $request
      * @param UserPasswordEncoderInterface $hasher
      * @param EntityManagerInterface $manager
+     * @param TokenStorageInterface $tokenStorage
      * @return Response
      */
     #[Route("/account/delete", name: "account_delete")]
@@ -268,8 +269,9 @@ class AccountController extends AbstractController
 
                 //verif mdp
                 if ($isPasswordValid) {
-                    //remove si tout est ok
+                    //forcer la déconnexion
                     $tokenStorage->setToken(null);
+                    //remove si tout est ok
                     $manager->remove($user);
                     $manager->flush();
 
@@ -278,7 +280,7 @@ class AccountController extends AbstractController
                         'Votre compte a été supprimé avec succès.'
                     );
 
-                    return $this->redirectToRoute('account_logout');
+                    return $this->redirectToRoute('homepage');
                 }
             }
 
