@@ -1,20 +1,64 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
-{% block title %}Hello HomeController!{% endblock %}
-
+{% block title %}Bienvenue{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/HP/Documents/symfonyDocs/cars/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/HP/Documents/symfonyDocs/cars/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div class="slide" id="home">
+    
+    </div>
+    <div class="container">
+        <div class="jumbotron mt-3">
+            <h1 class="display-3">Bienvenue sur SellYourCar</h1>
+            <p class="lead">Nous mettons en relation des futurs locataires et les propriétaires qui veulent profiter d'opportunités et gagner de l'argent en proposant leurs biens à la location pour des vacances</p>
+            <hr class="my-4">
+            <p>Vous êtes voyageur? Et vous voulez voir où vous pourrez loger pour votre prochain déplacement?</p>
+            <p class="lead">
+                <a href="#" class="btn btn-primary btn-lg" role="button">Voir nos annonces</a>
+            </p>
+        </div>
+        <h1 class="mt-3 mb-4">Nos dernières annonces</h1>
+        <div class="row">
+        {% for recent_car in recent_cars %}
+            <div class="col-md-4">
+                <div class="card bg-light mb-3">
+                    <div class="card-header text-center">
+                        {{recent_car.model}}, <strong>49€ / nuit</strong>
+                    </div>
+                    <img src="http://placehold.it/1000x400" alt="Image de l'appartement" class="starsimg">
+                    <div class="card-body">
+                        <div class="card-title">
+                            Super appartement! 
+                        </div>
+                        <p class="card-text">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, earum modi! Dolorem at exercitationem sapiente optio aliquam blanditiis.
+                        </p>
+                        <a href="#" class="btn btn-secondary">En savoir plus</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div> 
+        <h1 class="mt-3 mb-4">Nos vendeurs stars</h1>
+        <div class="row">
+        {% for top_owner in top_owners %}
+            <div class="col-md-6">
+                <div class="card bg-light mb-3">
+                    <div class="card-header text-center">
+                        {{top_owner.firstName}}, <strong>49€ / nuit</strong>
+                    </div>
+                    <img src="http://placehold.it/1000x400" alt="Image de l'appartement" class="starsimg">
+                    <div class="card-body">
+                        <div class="card-title">
+                            Super appartement! 
+                        </div>
+                        <p class="card-text">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, earum modi! Dolorem at exercitationem sapiente optio aliquam blanditiis.
+                        </p>
+                        <a href="#" class="btn btn-secondary">En savoir plus</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div> 
+    </div>
 {% endblock %}
+

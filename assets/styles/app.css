@@ -1,5 +1,25 @@
+*{
+    margin:0;
+    padding:0;
+    scroll-behavior: smooth;
+}
+
+.slide{
+    width:100%;
+    min-height:100vh;
+    position: relative;
+}
+
+#home{
+    background-image: url(/public/images/bg_home.jpg);
+    background-position: center center;
+    background-size: cover;
+}
 .container{
     margin-top:20px;
+}
+.full{
+    min-height:70vh;
 }
 
 .starsimg{
@@ -30,14 +50,13 @@
     text-shadow: 3px 3px 3px rgba(0,0,0,0.5);
 }
 
-.full{
-    min-height:70vh;
-}
 
+/* hover de déconnexion */
 a.dropdown-item.bg-light:hover {
     color: red;
 }
 
+/* gestion image de profil */
 .bigAvatar, .avatar {
     margin:0 auto;
     border-radius: 50%;
