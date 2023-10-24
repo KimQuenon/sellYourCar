@@ -37,7 +37,7 @@ class HomeController extends AbstractController
         return $this->render('home.html.twig', [
             'total_users'=>$totalUsers,
             'total_cars' => $totalCars,
-            'recent_cars' => $recentCars,
+            'cars' => $recentCars,
             'top_owners' => $result,
         ]);
     }

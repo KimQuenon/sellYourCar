@@ -63,51 +63,37 @@
             </div>
         </div>
     </div>
+    <div class="slide d-flex align-items-center">
+        <div class="container">
+            <h1 class="mt-3 mb-4">Nos dernières annonces</h1>
+            <div class="row">
+                {% include "partials/cards.html.twig" %}
+            </div> 
+        </div>
+    </div>
     <div class="container">
-        <h1 class="mt-3 mb-4">Nos dernières annonces</h1>
-        <div class="row">
-        {% for recent_car in recent_cars %}
-            <div class="col-md-4">
-                <div class="card bg-light mb-3">
-                    <div class="card-header text-center">
-                        {{recent_car.model}}, <strong>49€ / nuit</strong>
-                    </div>
-                    <img src="http://placehold.it/1000x400" alt="Image de l'appartement" class="starsimg">
-                    <div class="card-body">
-                        <div class="card-title">
-                            Super appartement! 
+            <h1 class="mt-3 mb-4">Nos vendeurs stars</h1>
+            <div class="row">
+            {% for top_owner in top_owners %}
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header text-center">
+                            {{top_owner.firstName}}, <strong>49€ / nuit</strong>
                         </div>
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, earum modi! Dolorem at exercitationem sapiente optio aliquam blanditiis.
-                        </p>
-                        <a href="#" class="btn btn-secondary">En savoir plus</a>
+                        <img src="http://placehold.it/1000x400" alt="Image de l'appartement" class="starsimg">
+                        <div class="card-body">
+                            <div class="card-title">
+                                Super appartement! 
+                            </div>
+                            <p class="card-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, earum modi! Dolorem at exercitationem sapiente optio aliquam blanditiis.
+                            </p>
+                            <a href="#" class="btn btn-secondary">En savoir plus</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-        </div> 
-        <h1 class="mt-3 mb-4">Nos vendeurs stars</h1>
-        <div class="row">
-        {% for top_owner in top_owners %}
-            <div class="col-md-6">
-                <div class="card bg-light mb-3">
-                    <div class="card-header text-center">
-                        {{top_owner.firstName}}, <strong>49€ / nuit</strong>
-                    </div>
-                    <img src="http://placehold.it/1000x400" alt="Image de l'appartement" class="starsimg">
-                    <div class="card-body">
-                        <div class="card-title">
-                            Super appartement! 
-                        </div>
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, earum modi! Dolorem at exercitationem sapiente optio aliquam blanditiis.
-                        </p>
-                        <a href="#" class="btn btn-secondary">En savoir plus</a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-        </div> 
+            {% endfor %}
+            </div> 
     </div>
 {% endblock %}
 

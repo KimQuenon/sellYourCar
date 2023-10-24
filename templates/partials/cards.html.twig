@@ -1,0 +1,19 @@
+{% for car in cars %}
+    {# création d'une variable twig pour l'url (slug) #}
+    {% set url = path('cars_show', {'slug':car.slug}) %}
+    <div class="col-md-4">
+        <div class="card bg-light mb-3">
+            <div class="card-header text-center">
+                {{car.km}} km, <strong>{{car.price}}€</strong>
+            </div>
+            <a href="{{url}}">
+                <img src="{{car.coverImage}}" alt="image de la voiture {{car.model}}" class="starsimg">
+            </a>
+            <div class="card-body">
+                <h4 class="card-title">{{car.model}}</h4>
+                <h5 class="card-title">{{car.brand}}</h5>
+                <a href="{{url}}" class="btn btn-primary">En savoir plus</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
