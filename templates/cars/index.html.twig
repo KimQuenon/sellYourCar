@@ -5,6 +5,12 @@
 {% block body %}
     <div class="container">
         <div class="row">
+            <h1 class="mb-3">Consultez notre show-room</h1>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <p>Découvrez notre showroom en ligne pour explorer notre impressionnante sélection de véhicules. Parcourez des modèles de haute qualité à des prix compétitifs, et trouvez la voiture de vos rêves dès aujourd'hui !</p>
+                </div>
+            </div>
             {% for car in cars %}
                 {# création d'une variable twig pour l'url (slug) #}
                 {% set url = path('cars_show', {'slug':car.slug}) %}
@@ -19,7 +25,7 @@
                         <div class="card-body">
                             <h4 class="card-title">{{car.model}}</h4>
                             <h5 class="card-title">{{car.brand}}</h5>
-                            <a href="{{url}}" class="btn btn-secondary">En savoir plus</a>
+                            <a href="{{url}}" class="btn btn-primary">En savoir plus</a>
                         </div>
                     </div>
                 </div>
