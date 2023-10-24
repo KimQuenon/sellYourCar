@@ -74,6 +74,17 @@
     background-image: url(/public/images/details3.webp);
 }
 
+/* annonces récentes */
+.cardHover{
+    transition:all 0.5s;
+    cursor: pointer;
+}
+
+.cardHover:hover{
+    background-color: #e5e5e5;
+    transform: scale(1.05);
+}
+
 .starsimg{
     height:200px;
     width:100%;
