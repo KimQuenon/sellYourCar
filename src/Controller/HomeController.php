@@ -24,21 +24,32 @@ class HomeController extends AbstractController
         //afficher 2 plus gros vendeurs
         $queryBuilder = $repoUser->createQueryBuilder('u');
         $queryBuilder
-        ->select('u.id as user_id, u.firstName, u.lastName, COUNT(c.id) as car_count')
+        ->select('u.id as user_id, u.firstName, u.lastName, u.picture, u.introduction, u.description, COUNT(c.id) as car_count')
         ->leftJoin('u.cars', 'c')
         ->groupBy('u.id')
         ->orderBy('car_count', 'DESC')
-        ->setMaxResults(2);
+        ->setMaxResults(3);
 
         $query = $queryBuilder->getQuery();
         $result = $query->getResult();
 
+        //init tab pour calculer nbre véhicules
+        $carCounts = [];
+        
+        foreach ($result as $user) {
+            $userId = $user['user_id'];
+            $carCount = $user['car_count'];
+        
+            //associe le nbre de véhicules à id user
+            $carCounts[$userId] = $carCount;
+        }
 
         return $this->render('home.html.twig', [
             'total_users'=>$totalUsers,
             'total_cars' => $totalCars,
             'cars' => $recentCars,
             'top_owners' => $result,
+            'car_counts' => $carCounts
         ]);
     }
 }

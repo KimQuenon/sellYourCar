@@ -75,6 +75,12 @@
 }
 
 /* annonces récentes */
+#newAd{
+    background-image: url(/public/images/bg_annonce.jpg);
+    background-size: cover;
+    background-position: center center;
+    /* background-repeat: no-repeat; */
+}
 .cardHover{
     transition:all 0.5s;
     cursor: pointer;
@@ -85,6 +91,12 @@
     transform: scale(1.05);
 }
 
+/* top vendeur */
+#topOwners{
+    background-image: url(/public/images/bg_owners.jpg);
+    background-size: cover;
+    background-position: center center;
+}
 .starsimg{
     height:200px;
     width:100%;
@@ -120,7 +132,7 @@ a.dropdown-item.bg-light:hover {
 }
 
 /* gestion image de profil */
-.bigAvatar, .avatar {
+.bigAvatar, .avatar, .ownerAvatar{
     margin:0 auto;
     border-radius: 50%;
     overflow: hidden;
@@ -134,10 +146,13 @@ a.dropdown-item.bg-light:hover {
 .avatar{
     width:40px;
     height:40px;
-    margin-left: 2%;
 }
 
-.bigAvatar img, .avatar img {
+.ownerAvatar{
+    width:60px;
+    height:60px;
+}
+.bigAvatar img, .avatar img, .ownerAvatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;

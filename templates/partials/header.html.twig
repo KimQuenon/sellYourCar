@@ -35,6 +35,8 @@
                                     <a href="{{path('account_password')}}" class="dropdown-item">Modifier le mot de passe</a>
                                     <a href="{{path('account_logout')}}" class="dropdown-item bg-light" id="logout-link">Déconnexion</a>
                                     </div>
+                                    &nbsp;
+                                    &nbsp; 
                                     {% if app.user.picture %}
                                         <div class="avatar">
                                             <img src="/uploads/{{app.user.picture}}" alt="avatar de {{app.user.firstName}} {{app.user.lastName}}" class="avatar">
