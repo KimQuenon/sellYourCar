@@ -33,10 +33,11 @@
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 35px, 0px);" data-popper-placement="top-start">
                                     <a href="{{path('account_profile', {'slug':app.user.slug})}}"class="dropdown-item">Mon profil</a>
                                     <a href="{{path('account_cars')}}" class="dropdown-item">Mes annonces</a>
+                                    <a href="{{path('account_password')}}" class="dropdown-item">Modifier le mot de passe</a>
                                     <a href="{{path('account_logout')}}" class="dropdown-item bg-light" id="logout-link">Déconnexion</a>
                                     </div>
                                     {% if app.user.picture %}
-                                        <div>
+                                        <div class="avatar">
                                             <img src="/uploads/{{app.user.picture}}" alt="avatar de {{app.user.firstName}} {{app.user.lastName}}" class="avatar">
                                         </div>
                                     {% endif %}

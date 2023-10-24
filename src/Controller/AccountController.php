@@ -270,7 +270,7 @@ class AccountController extends AbstractController
                 'Votre avatar a été modifié avec succès'    
             );
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('account_profile', ['slug' => $user->getSlug()]);
 
 
         }
@@ -300,7 +300,7 @@ class AccountController extends AbstractController
                 'Votre avatar a bien été supprimé'
             );
         }
-        return $this->redirectToRoute('account_profile');
+        return $this->redirectToRoute('account_profile', ['slug' => $user->getSlug()]);
     }
 
 

@@ -33,10 +33,11 @@
             {% else %}
             <div class="col-md-4">
                <div class="bigAvatar d-flex justify-content-center">
-                  <img src="https://picsum.photos/seed/picsum/200/300" alt="avatar de {{app.user.firstName}} {{app.user.lastName}}">
+                  <img src="https://no5.co.nz/cdn/shop/t/4/assets/placeholder_600x.png?v=113555733946226816651632776942" alt="avatar de {{app.user.firstName}} {{app.user.lastName}}">
                </div>
-               <div class='row mt-4 justify-content-center'>
-                  <div class="col-6 text-center">
+               <div class='row mt-2 justify-content-center'>
+                  <div class="col-8 text-center">
+                        <p>Personnalisez votre profil en ajoutant un avatar !</p>
                         <a href="{{path('account_modifimg')}}" type="button" class="btn btn-success">+ Ajouter un avatar</a>
                   </div>
                </div>
