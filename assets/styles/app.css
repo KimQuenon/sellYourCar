@@ -41,15 +41,38 @@
     border-radius: 10px;
 }
 
-#homeImage{
+#homeImage, #aboutImage{
     width:100%;
-    height:70vh;
-    background-image: url(/public/images/home_car.png);
+    height:80vh;
     background-position: center center;
     background-size: cover;
 }
 
+#homeImage{
+    background-image: url(/public/images/home_car.png);
+}
 
+#aboutImage{
+    background-image: url(/public/images/front_details.png);
+}
+/* à propos */
+
+#details1, #details2, #details3{
+    width:100%;
+    height:20vh;
+    background-position: center center;
+    background-size: cover;
+}
+
+#details1{
+    background-image: url(/public/images/details1.webp);
+}
+#details2{
+    background-image: url(/public/images/details2.webp);
+}
+#details3{
+    background-image: url(/public/images/details3.webp);
+}
 
 .starsimg{
     height:200px;
