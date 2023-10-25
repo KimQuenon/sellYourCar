@@ -107,14 +107,14 @@
                                 <div>
                                     <div>
                                         <strong>Description: </strong>
-                                        <p class="mb-0">{{top_owner.description | raw}}</p>
+                                        <p class="mb-0">
+                                            {{ top_owner.description | raw | striptags | slice(0, 100) }}{% if top_owner.description | length > 100 %}...{% endif %}                                        
+                                        </p>
                                     </div>
                                     <figcaption class="blockquote-footer mt-2">
                                         <cite title="Source Title">{{top_owner.firstName}} {{top_owner.lastName}}</cite>
                                     </figcaption>
                                 </div>
-
-
                             </p>
                         </div>
                     </div>
