@@ -83,11 +83,12 @@
             <h1 class="mt-3 mb-3">Nos vendeurs stars</h1>
             <p class="mb-3">Voici le classement de nos meilleurs vendeurs du moment ! Rejoignez l'aventure et tentez de rafler la première place !</p>
             <a href="{{path('account_register')}}" type="button" class="btn btn-primary mb-5">M'inscrire</a>
+            <a href="{{path('account_login')}}" type="button" class="btn btn-secondary mb-5">Me connecter</a>
             <div class="row">
             {% for top_owner in top_owners %}
                 <div class="col-md-4">
                     <div class="card mb-3">
-                        <div class="card-header text-center">
+                        <div class="card-header text-center bg-primary text-light">
                             <i class="fa-solid fa-crown" style="color: #fce043;"></i>
                             <strong>{{top_owner.firstName}} {{top_owner.lastName}}</strong>
                         </div>
