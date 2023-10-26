@@ -52,7 +52,7 @@ class CarController extends AbstractController
             //gestion des images
             foreach($car->getImages() as $image)
             {
-                $image->setCars($car);
+                $image->setCar($car);
                 $manager->persist($image);
             }
 
