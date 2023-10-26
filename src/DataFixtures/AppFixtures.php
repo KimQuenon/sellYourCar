@@ -70,7 +70,6 @@ class AppFixtures extends Fixture
         /**
          * boucler 30 objets gérés par faker pour les voitures
          */
-    
 
         $carCover =[
             'https://static-assets.tesla.com/configurator/compositor?&bkba_opt=1&view=STUD_3QTR&size=1400&model=ms&options=$BP02,$ADPX2,$GLTL,$AU01,$APF1,$APH4,$APPB,$X028,$BTX5,$BS00,$BCMB,$CH04,$CF00,$CW02,$COFR,$X039,$IDCF,$X027,$DRLH,$DU00,$AF02,$FMP6,$FG02,$DCF0,$FR04,$TD00,$X007,$X011,$PI01,$IX00,$X001,$LP01,$LT5P,$MI03,$X037,$MDLS,$DV4W,$X025,$X003,$ZINV,$PPMR,$PS01,$PK00,$X031,$PX00,$PF00,$X043,$TM00,$BR04,$REEU,$RFP2,$EUSB,$X014,$S32P,$ME02,$QTFP,$SR07,$SP01,$X021,$SC04,$SU01,$TR00,$TIM3,$DSHG,$MT75A,$UTSB,$WTAS,$WR02,$YFCC,$CPF1&crop=1400,850,300,130&',
@@ -97,16 +96,18 @@ class AppFixtures extends Fixture
             'https://images.ctfassets.net/6x2h5ns7uwip/3AmOhjXySrI1EByu0lUXEr/aa251c3ff45a22ce960e4ced175c9c45/CA0250_FEATURED_CARS_MODULE_CUTOUTS_CORSA_V2_REVERSED_CA0250_FEATURED_CARS_MODULE_CUTOUTS_F4F7F5.png?f=center&fit=fill&fm=webp&h=676&w=1200',
             'https://mclaren.scene7.com/is/image/mclaren/mclaren_automotive_600lt_spider_front_side:crop-2x1?fmt=png-alpha&wid=1940&hei=970',
             'https://cdn.rebrickable.com/media/thumbs/sets/60398-1/122724.jpg/1000x800p.jpg?1684420838.1422749',
+            'https://pngimg.com/uploads/volkswagen/volkswagen_PNG1787.png',
+            'https://cdn.pixabay.com/photo/2020/06/11/17/02/show-car-5287477_1280.png',
+            'https://lzd-img-global.slatic.net/g/p/55a8448d307aed4f177450e2a0f5c9b5.png_960x960q80.png_.webp',
+            'https://cool-toys.com.au/wp-content/uploads/2018/07/BCJ81_PoP_13_1_w900_1390060415.png',
             ];
         
         for ($i=1; $i <= 30 ; $i++) { 
             $car = new Car();
 
-            $randomImage = $carCover[array_rand($carCover)];
-
             $car->setModel($faker->vehicleModel)
                 ->setBrand($faker->vehicleBrand)
-                ->setCoverImage($randomImage)
+                ->setCoverImage($carCover[array_rand($carCover)])
                 ->setKm(rand(0,80000))
                 ->setPrice(rand(15000,50000))
                 ->setOwners(rand(1,3))
@@ -120,12 +121,21 @@ class AppFixtures extends Fixture
                 ->setAuthor($users[rand(0, count($users)-1)]); //rand pour un id d'author
 
             //gestion de la galerie associée
-            $carImages = [];
+            $carImages = [
+                'https://i.pinimg.com/originals/af/6c/f0/af6cf01468224408ece755b199fb9776.jpg',
+                'https://www.usatoday.com/gcdn/presto/2019/03/06/USAT/dbee093f-65b9-4cd1-866e-524761d66986-Large-35791-HyundaiMotorSharesFirstGlimpseofAll-NewSonata.jpg',
+                'https://cfx-wp-images.imgix.net/2022/10/Registration-in-Car-min.jpg?auto=compress%2Cformat&ixlib=php-3.3.0&s=a84b40ab413661835c74953342756c92',
+                'https://lexanimotorcars.com/img/home-hero-yukon-int.jpg?w=2000&h=1000&fit=crop&fm=pjpg',
+                'https://images.cars.com/cldstatic/wp-content/uploads/toyota-c-hr-2020-ceiling--front-row--interior-29.jpg',
+                'https://www.autozone.com/cdn/images/B2C/US/media/Landing/RAInteriorAccess/ia-lp-personalize-header-d.jpg',
+                'https://repairsmith-prod-wordpress.s3.amazonaws.com/2022/11/holding-steering-wheel.jpg',
+                'https://d2hucwwplm5rxi.cloudfront.net/wp-content/uploads/2021/08/26123338/How-steering-wheel-returns-to-center-Cover-20210826.jpg',
+            ];
 
             for ($g=1; $g <= rand(2,5); $g++)
             { 
                 $image = new Images();
-                $image->setUrl('https://picsum.photos/id/'.$g.'/900')
+                $image->setUrl($carImages[array_rand($carImages)])
                     ->setCaption($faker->sentence())
                     ->setCar($car);
                 $manager->persist($image);

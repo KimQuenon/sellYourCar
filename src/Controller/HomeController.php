@@ -10,6 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
+    /**
+     * afficher les annonces récentes - les vendeurs les plus importants
+     *
+     * @param UserRepository $repoUser
+     * @param CarRepository $repo
+     * @return Response
+     */
     #[Route('/', name: 'homepage')]
     public function index(UserRepository $repoUser, CarRepository $repo): Response
     {
