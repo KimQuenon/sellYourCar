@@ -1,0 +1,8 @@
+{# afficher les photos de profil (60x60) #}
+<div class="ownerAvatar">
+    {% if owner.picture %}
+        <img src="{{owner.picture}}" alt="avatar de {{owner.firstName}} {{owner.lastName}}">
+    {% else %}
+        <img src="https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg?ssl=1" alt="avatar de {{owner.firstName}} {{owner.lastName}}">
+    {% endif %}
+</div>

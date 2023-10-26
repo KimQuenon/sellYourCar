@@ -173,10 +173,21 @@ class CarController extends AbstractController
      * @return Response
      */
     #[Route("/cars/{slug}", name:"cars_show")]
-    public function show(string $slug, Car $car): Response
+    public function show(string $slug, Car $car, CarRepository $repo): Response
     {
+        //recup l'auteur de l'annonce
+        $owner = $car->getAuthor();
+        //recup les autres voitures de ce même auteur et les mettre dans un tab
+        $otherCars = $owner->getCars()->toArray(); 
+        //évite que la voiture de l'annonce apparaisse dans les suggestions
+        $otherCars = array_filter($otherCars, function ($otherCar) use ($car) {
+            return $otherCar !== $car;
+        });
+        
         return $this->render("cars/show.html.twig",[
-            'car'=>$car
+            'car'=>$car,
+            'owner'=>$owner,
+            'otherCars' => $otherCars,
         ]);
     }
 }

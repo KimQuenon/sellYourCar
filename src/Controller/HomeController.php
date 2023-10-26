@@ -48,7 +48,7 @@ class HomeController extends AbstractController
             'total_users'=>$totalUsers,
             'total_cars' => $totalCars,
             'cars' => $recentCars,
-            'top_owners' => $result,
+            'owners' => $result,
             'car_counts' => $carCounts
         ]);
     }

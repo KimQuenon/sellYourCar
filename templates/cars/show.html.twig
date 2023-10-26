@@ -6,7 +6,9 @@
    <div class="container mt-4">
     <div class="row">
         <div class="col-md-6 mb-3">
-            <h1>Modèle {{car.brand}} {{car.model}}</h1>
+            <h1 class="mb-0">{{car.model}}</h1>
+            <h3 class="text-body-secondary">{{car.brand}}</h3>
+            <hr>
             <div><strong>Modèle</strong>: {{car.model}}</div>
             <div><strong>Marque</strong>: {{car.brand}}</div>
             <div><strong>Kilométrage</strong>: {{car.km}} km</div>
@@ -27,52 +29,77 @@
             </div>
             <div><h1 id="price">{{car.price}} €</h1></div>
         </div>
-
-        <div class="bd-example mt-5">
-            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
-                <div class="carousel-indicators justify-content-start">
-                    {% for image in car.images %}
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{loop.index0}}" {% if loop.first %} class="active" aria-current="true" {% endif %} aria-label="Slide {{loop.index}}"></button>
-                {% endfor %} 
+    </div>
+   </div>
+    <div class="bd-example mt-5">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+            <div class="carousel-indicators justify-content-start">
+                {% for image in car.images %}
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{loop.index0}}" {% if loop.first %} class="active" aria-current="true" {% endif %} aria-label="Slide {{loop.index}}"></button>
+            {% endfor %} 
+            </div>
+            <div class="carousel-inner">
+                {% for image in car.images %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        <img src="{{image.url}}" class="d-block w-100" alt="image de {{car.model}}">
+                        <div class="carousel-caption d-none d-md-block" style="text-align: left;">
+                                <h4>{{car.model}}</h4>
+                                <h5>{{car.brand}}</h5>
+                            <p>{{image.caption}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <div class="slidePage">
+        <div class="container mt-5">
+            <h1>Profil de l'utilisateur</h1>
+            <div class="row mt-4">
+                <div class="col-md-1 ownerAvatar">
+                {% include "partials/avatar.html.twig" %}
                 </div>
-                <div class="carousel-inner">
-                    {% for image in car.images %}
-                        <div class="carousel-item {% if loop.first %}active{% endif %}">
-                            <img src="{{image.url}}" class="d-block w-100" alt="image de {{car.model}}">
-                            <div class="carousel-caption d-none d-md-block" style="text-align: left;">
-                                    <h4>{{car.model}}</h4>
-                                    <h5>{{car.brand}}</h5>
-                                <p>{{image.caption}}</p>
+                <div class="col-md-10">
+                    <h3>{{owner.lastName}}</h3>
+                    <h4 class="text-body-secondary">{{owner.firstName}}</h4>
+                    <hr>
+                    <div class="text-end mb-3"><p>{{owner.introduction}}</p>
+                        <figcaption class="blockquote-footer">
+                            {{owner.firstName}} {{owner.lastName}} for<cite title="Source Title">Sell Your Car</cite>
+                        </figcaption>
+                    </div>
+                    <p>{{owner.description | raw}}</p>
+                </div>
+            </div>
+            <h1 class="mt-3 mb-4">Du même vendeur</h1>
+            <div class="row">
+                {% for otherCar in otherCars %}
+                    {% set url = path('cars_show', {'slug':otherCar.slug}) %}
+                    <div class="col-md-4">
+                        <div class="card cardHover mb-3">
+                            <div class="card-header text-center">
+                                {{otherCar.km}} km, <strong>{{otherCar.price}}€</strong>
+                            </div>
+                            <a href="{{url}}">
+                                <img src="{{otherCar.coverImage}}" alt="image de la voiture {{otherCar.model}}" class="starsimg">
+                            </a>
+                            <div class="card-body">
+                                <h3 class="card-title">{{otherCar.model}}</h3>
+                                <h5 class="card-title">{{otherCar.brand}}</h5>
+                                <a href="{{url}}" class="btn btn-primary">En savoir plus</a>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-
     </div>
-        {# <div class="col">
-            <div class="row">
-                <div class="col-4">
-                    <img src="https://picsum.photos/64/64" alt="Avatar de Bruce">
-                </div>
-                <div class="col">
-                    <h3>Bruce Wayne</h3>
-                    <span class="badge badge-primary">3 annonces:</span>
-                </div>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatum suscipit iusto assumenda harum non obcaecati!</p>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatum suscipit iusto assumenda harum non obcaecati!</p>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatum suscipit iusto assumenda harum non obcaecati!</p>
-            </div>
-        </div> #}
-   </div>
-
 {% endblock %}
