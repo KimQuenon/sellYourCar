@@ -15,7 +15,7 @@
 }
 
 /* homepage */
-.slide{
+.slidePage{
     width:100%;
     min-height:100vh;
     position: relative;
@@ -55,6 +55,7 @@
 #aboutImage{
     background-image: url(/public/images/front_details.png);
 }
+
 /* à propos */
 
 #details1, #details2, #details3{
@@ -79,7 +80,6 @@
     background-image: url(/public/images/bg_annonce.jpg);
     background-size: cover;
     background-position: center center;
-    /* background-repeat: no-repeat; */
 }
 .cardHover{
     transition:all 0.5s;
@@ -104,25 +104,33 @@
     display: block;
 }
 
-
-.annonce-title{
-    padding: 2em;
-    background-size: cover;
+/* vue individuelle */
+#carImage{
+    width:100%;
+    background-image: url(/public/images/bg_show.png);
+    height:80vh!important;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center center;
 }
 
-.annonce-title h1, .annonce-title h2, .annonce-title p{
-    color: white;
-    text-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+.carCover{
+    width:100%;
+    height:80vh;
 }
 
 .carousel-item img{
-    height: 400px;
+    height: 300px;
     object-fit: cover;
 }
 
 .carousel-caption{
     text-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+}
+
+#price{
+    font-size: 60px;
+    text-align: right;
 }
 
 
@@ -152,8 +160,11 @@ a.dropdown-item.bg-light:hover {
     width:60px;
     height:60px;
 }
-.bigAvatar img, .avatar img, .ownerAvatar img {
+.bigAvatar img, .avatar img, .ownerAvatar img, .carCover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+.carCover img{
+    object-fit: contain;
 }
