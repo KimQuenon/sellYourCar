@@ -1,14 +1,14 @@
 {% extends "base.html.twig" %}
 
 
-{% block title %}Modification de la voiture: {{car.brand}} {{car.model}}{% endblock %}
+{% block title %}Mode Edition{% endblock %}
 
 {% form_theme myForm 'cars/_collection.html.twig' %}
 
 {% block body %}
 
     <div class="container mt-4">
-        <h1>Modification de l'annonce : <strong>{{car.brand}} {{car.model}}</strong></h1>
+        <h1>Modification de l'annonce : {{car.fullBrand}}</strong></h1>
 
         {{form_start(myForm)}}
 

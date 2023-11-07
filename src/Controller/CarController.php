@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CarController extends AbstractController
@@ -36,6 +38,7 @@ class CarController extends AbstractController
      * @return Response
      */
     #[Route("/cars/new", name:"cars_create")]
+    #[IsGranted('ROLE_USER')]
     public function create(Request $request, EntityManagerInterface $manager): Response
     {
         $car = new Car();
@@ -87,9 +90,14 @@ class CarController extends AbstractController
      * @return Response
      */
     #[Route("cars/{slug}/edit", name:"cars_edit")]
+    #[IsGranted(
+        attribute: new Expression('(user === subject and is_granted("ROLE_USER")) or is_granted("ROLE_ADMIN")'),
+        subject: new Expression('args["car"].getAuthor()'),
+        message: "Cette annonce ne vous appartient pas, vous ne pouvez pas la modifier"
+    )]
     public function edit(Request $request, EntityManagerInterface $manager, Car $car): Response
     {
-        if ($car->getAuthor() === $this->getUser()) {
+        
             $form = $this->createForm(CarType::class, $car); //récupérer le formulaire
             $form->handleRequest($request);
 
@@ -116,16 +124,6 @@ class CarController extends AbstractController
                 ]);
 
             }
-        }else{
-            $this->addFlash(
-                'danger',
-                "Vous n'êtes pas autorisé à modifier cette annonce."
-            );
-
-            return $this->redirectToRoute('cars_show',[
-                'slug' => $car->getSlug()
-            ]);
-        }
         
         return $this->render("cars/edit.html.twig",[
             "car"=> $car,
@@ -141,9 +139,13 @@ class CarController extends AbstractController
      * @return Response
      */
     #[Route("cars/{slug}/delete", name:"cars_delete")]
+    #[IsGranted(
+        attribute: new Expression('(user === subject and is_granted("ROLE_USER")) or is_granted("ROLE_ADMIN")'),
+        subject: new Expression('args["car"].getAuthor()'),
+        message: "Cette annonce ne vous appartient pas, vous ne pouvez pas la modifier"
+    )]
     public function deleteCars(Car $car, EntityManagerInterface $manager): Response
     {
-        if ($car->getAuthor() === $this->getUser()) {
             $manager->remove($car);
             $manager->flush();
 
@@ -151,12 +153,6 @@ class CarController extends AbstractController
                 'success',
                 "L'annonce <strong>".$car->getBrand()." ".$car->getModel()."</strong> a bien été supprimée!"
             );
-        } else {
-            $this->addFlash(
-                'danger',
-                "Vous n'avez pas la permission de supprimer cette annonce."
-            );
-        }
 
         return $this->redirectToRoute('cars_index');
 

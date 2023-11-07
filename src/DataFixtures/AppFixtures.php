@@ -43,6 +43,19 @@ class AppFixtures extends Fixture
         $faker->addProvider(new Fakecar($faker)); //appel au faker de voiture
         $slugify = new Slugify(); //init d'un nouveau slug hors boucle! sinon bouclé x fois et perte d'optimisation
         
+        //création d'un admin
+        $admin = new User();
+        $admin->setFirstName('Kim')
+            ->setLastName('Quenon')
+            ->setEmail('quenonk@epse.be')
+            ->setPassword($this->passwordHasher->hashPassword($admin, 'password'))
+            ->setIntroduction($faker->sentence())
+            ->setDescription('<p>'.join('</p><p>',$faker->paragraphs(3)).'</p>')
+            ->setRoles(['ROLE_ADMIN'])
+            ->setPicture('');
+
+        $manager->persist($admin);
+
         //gestion des users
         $users = []; //init d'un tab pour recup des users pour les annonces
 

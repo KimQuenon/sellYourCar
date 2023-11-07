@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Modèle : {{car.brand}} {{car.model}}{% endblock %}
+{% block title %}{{car.fullBrand}}{% endblock %}
 
 {% block body %}
    <div class="container mt-4">
@@ -20,6 +20,12 @@
             <div><strong>Transmission</strong>: {{car.transmission}}</div>
             <div><strong>Description</strong>:{{car.content | raw | nl2br}}</div>
             <div><strong>Options</strong>:{{car.options | raw | nl2br}}</div>
+            {% if (app.user and app.user == car.author) or is_granted('ROLE_ADMIN') %}
+                <a href="{{path('cars_edit', {'slug':car.slug})}}" class="btn btn-warning m-2">Modification de l'annonce</a>
+            {% endif %}
+            {% if (app.user and app.user == car.author) or is_granted('ROLE_ADMIN') %}
+                <a href="{{path('cars_delete', {'slug':car.slug})}}" class="btn btn-danger m-2">Suppression de l'annonce</a>
+            {% endif %}
         </div>
         <div class="col md-6 mb-3">
             <div id="carImage">

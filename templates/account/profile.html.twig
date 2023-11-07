@@ -4,7 +4,7 @@
 
 {% block body %}
    <div class="container mt-4  full">
-      <h1>Bienvenue <strong>{{user.firstName}} {{user.lastName}}</strong> !</h1>
+      <h1>Bienvenue <strong>{{user.fullName}}</strong> !</h1>
       <div class="row col-md-11 mt-4 justify-content-center">
          <div class="row justify-content-between align-items-center">
             <div class="col-md-5">
@@ -16,10 +16,10 @@
                   <a href="{{path('account_delete')}}" class="btn btn-danger" type="button">Supprimer le profil</a>
                </div>
             </div>
-            {% if app.user.picture %}
+            {% if user.picture %}
             <div class="col-md-4">
                <div class="bigAvatar d-flex justify-content-center">
-                  <img src="/uploads/{{app.user.picture}}" alt="avatar de {{app.user.firstName}} {{app.user.lastName}}">
+                  <img src="/uploads/{{user.picture}}" alt="avatar de {{user.fullName}}">
                </div>
                <div class='row mt-4 justify-content-between'>
                   <div class="col-6 text-center">

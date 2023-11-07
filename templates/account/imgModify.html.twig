@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container mt-4  full">
-        <h1>Modification de l'avatar de {{app.user.firstName}} {{app.user.lastName}}</h1>
+        <h1>Modification de l'avatar de {{app.user.fullName}}</h1>
         {% if app.user.picture %}
         <img src="/uploads/{{app.user.picture}}" alt="avatar de {{app.user.email}}">
         {% endif %}

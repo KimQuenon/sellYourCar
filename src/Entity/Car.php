@@ -111,6 +111,16 @@ class Car
         }
     }
 
+    /**
+     * Afficher la dénomination complète du véhicule
+     *
+     * @return string
+     */
+    public function getFullBrand(): string
+    {
+        return $this->brand." ".$this->model;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
