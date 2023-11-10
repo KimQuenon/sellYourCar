@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ContactController extends AbstractController
@@ -41,14 +42,35 @@ class ContactController extends AbstractController
 
 
     #[Route('/messages', name: 'messagerie')]
+    #[IsGranted('ROLE_ADMIN')]
     public function message(ContactRepository $messagerepo): Response
     {
         $messages = $messagerepo->findAll();
 
-        return $this->render('messages.html.twig', [
+        return $this->render('contact/messagerie.html.twig', [
             'messages' => $messages,
         ]);
 
+    }
+
+
+    #[Route("messages/{id}/delete", name:"message_delete")]
+    #[IsGranted('ROLE_ADMIN')]
+    public function deleteMessage(Contact $message, EntityManagerInterface $manager): Response
+    {
+            $manager->remove($message);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Le message de <strong>".$message->getName()."</strong> a bien été supprimé!"
+            );
+
+        return $this->redirectToRoute('messagerie');
+
+        return $this->render('contact/delete.html.twig', [
+            
+        ]);
     }
 
 }

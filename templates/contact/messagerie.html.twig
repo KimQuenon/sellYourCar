@@ -18,10 +18,10 @@
                     <tr>
                         <td class="align-middle">{{message.name}}</td>
                         <td class="align-middle">{{message.email}}</td>
-                        <td class="align-middle">{{message.message | raw | striptags | slice(0, 100)}}...</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-primary">Voir plus...</button>
-                            <button type="button" class="btn btn-danger mt-1">Supprimer</button>
+                        <td class="align-middle">{{message.message | raw | nl2br}}</td>
+                        <td class="align-middle text-center">
+                            <a href="mailto:{{message.email}}" type="button" class="btn btn-primary">Répondre</a>
+                            <a href="{{path('message_delete', {'id':message.id})}}" type="button" class="btn btn-danger mt-3">Supprimer</button>
                         </td>
                     </tr>
                 {% endfor %}
