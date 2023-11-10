@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie{% endblock %}
+
+{% block body %}
+    <div class="container mt-4 ">
+        <div class="row">
+            <h1 class="mb-3">Messagerie</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="table-active">
+                        <th class="text-center">Nom</th>
+                        <th class="text-center">Mail</th>
+                        <th class="text-center">Message</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                {% for message in messages %}
+                    <tr>
+                        <td class="align-middle">{{message.name}}</td>
+                        <td class="align-middle">{{message.email}}</td>
+                        <td class="align-middle">{{message.message | raw | striptags | slice(0, 100)}}...</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-primary">Voir plus...</button>
+                            <button type="button" class="btn btn-danger mt-1">Supprimer</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </thead>
+            </table>
+        </div>
+    </div>
+{% endblock %}

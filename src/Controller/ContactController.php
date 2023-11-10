@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Form\ContactType;
+use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,4 +38,17 @@ class ContactController extends AbstractController
             'myForm' => $form->createView()
         ]);
     }
+
+
+    #[Route('/messages', name: 'messagerie')]
+    public function message(ContactRepository $messagerepo): Response
+    {
+        $messages = $messagerepo->findAll();
+
+        return $this->render('messages.html.twig', [
+            'messages' => $messages,
+        ]);
+
+    }
+
 }

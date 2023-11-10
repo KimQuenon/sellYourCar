@@ -4,13 +4,14 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 use App\Entity\Car;
+use App\Entity\User;
 use App\Entity\Images;
+use App\Entity\Contact;
 use Cocur\Slugify\Slugify;
 use Faker\Provider\Fakecar;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\Entity\User;
 
 class AppFixtures extends Fixture
 {
@@ -32,7 +33,7 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * Application du faker sur les voitures - galeries - user
+     * Application du faker sur les voitures - galeries - user - messagerie
      *
      * @param ObjectManager $manager
      * @return void
@@ -155,6 +156,15 @@ class AppFixtures extends Fixture
             }
             
             $manager->persist($car);
+        }
+
+        for ($m=1; $m <=10 ; $m++){
+            $message = new Contact();
+            $message->setName($faker->name())
+                    ->setEmail($faker->email())
+                    ->setMessage('<p>'.join('<p></p>',$faker->paragraphs(2)).'</p>');
+    
+            $manager->persist($message);
         }
 
         $manager->flush();
