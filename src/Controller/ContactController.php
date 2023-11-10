@@ -14,6 +14,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ContactController extends AbstractController
 {
+    /**
+     * Page de contact
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/contact', name: 'contactpage')]
     public function contact(Request $request, EntityManagerInterface $manager): Response
     {
@@ -35,12 +42,18 @@ class ContactController extends AbstractController
             );
         }
 
-        return $this->render('contact.html.twig', [
+        return $this->render('contact/contact.html.twig', [
             'myForm' => $form->createView()
         ]);
     }
 
 
+    /**
+     * Afficher la messagerie
+     *
+     * @param ContactRepository $messagerepo
+     * @return Response
+     */
     #[Route('/messages', name: 'messagerie')]
     #[IsGranted('ROLE_ADMIN')]
     public function message(ContactRepository $messagerepo): Response
@@ -54,6 +67,13 @@ class ContactController extends AbstractController
     }
 
 
+    /**
+     * Supprimer un message
+     *
+     * @param Contact $message
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route("messages/{id}/delete", name:"message_delete")]
     #[IsGranted('ROLE_ADMIN')]
     public function deleteMessage(Contact $message, EntityManagerInterface $manager): Response

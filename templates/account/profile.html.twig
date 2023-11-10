@@ -12,6 +12,9 @@
                <p class="mt-2 mb-5">Que souhaitez-vous faire, {{user.firstName}}?</p>
                <div class="d-grid gap-2">
                   <a href="{{path('cars_create')}}" class="btn btn-primary" type="button">Poster une annonce</a>
+                  {% if (is_granted('ROLE_ADMIN'))%}
+                     <a href="{{path('messagerie')}}" class="btn btn-dark" type="button">Consulter la messagerie</a>
+                  {% endif %}
                   <a href="{{path('account_edit')}}" class="btn btn-secondary" type="button">Modifier le profil</a>
                   <a href="{{path('account_delete')}}" class="btn btn-danger" type="button">Supprimer le profil</a>
                </div>
